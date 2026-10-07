@@ -1,0 +1,199 @@
+# 滞箱费台账核对 规则库
+#
+# 规则数据与代码分离：替换本文件即可切换规则集版本，无需改动 TypeScript。
+#
+# 条款引用纪律（由 shared/ruleset.ts 强制校验）：
+#   - 每条规则必须写全 document / number / clause / excerpt / kind / source，
+#     且 excerpt 必须是逐字摘录，不得改写。
+#   - kind: direct                       条款直接规定了所检查的要求
+#   - kind: derived-from-principle       条款未直接规定，仅能由原则性条款推论（severity 最多 warn）
+#   - kind: institutional-configuration 阈值出自本机构配置（severity 最多 info）
+#
+# ⚠️⚠️ 本规则库最重要的说明：**这里没有国家标准可引，而且不假装有。**
+#   本插件核对的是"滞箱费（demurrage／detention）台账"中的**算术自洽**：
+#     超期天数是否等于"还箱日期 − 免箱期起算日 − 免箱期"，
+#     滞箱费金额是否等于"超期天数 × 费率"。
+#   滞箱费由**承运人运价本与运输合同**约定，各船公司、各航线、各箱型的免箱期与费率都不同，
+#   **不存在全国统一标准**。因此每条规则的 basis 都如实写明"本条依据为算术自洽／台账可追溯性，
+#   不存在可引用的标准条文"，而不是编一个标准号出来。
+#   唯一的例外是币制形式，其规范载体是 **GB/T 12406—2022《表示货币的代码》**。
+#   ⚠️ **两处已于 2026-10-07 更正**（见 rules/evidence/clause-verification-standard-currency.md）：
+#     ① 旧写法称其"**等同采用** ISO 4217" —— 全国标准信息公共服务平台的采标情况实为
+#        「**修改采用 ISO 国际标准：ISO 4217:2015**」，**不是等同采用**；
+#     ② 旧写法未标年号 —— 现行版本为 **GB/T 12406—2022**（2022-12-30 发布并实施），
+#        **全部代替 GB/T 12406—2008**；⚠️ **两版名称不同**：2008 版是《表示货币和**资金**的代码》，
+#        2022 版是《表示货币的代码》。
+#
+# ⚠️⚠️ 另一条**必须保留**的边界：**本插件绝不判定滞箱费应当由谁承担、
+#   费率是否合理、是否可以向承运人申请减免、是否属于可索赔损失**。
+#   那取决于运输合同条款、责任划分与商务谈判，是业务与法务的判断。
+#   → 因此本插件只核对**台账自身的齐备与算术**：
+#     箱号与提单号是否填写、日期是否可解析且先后成立、
+#     超期天数是否与起止日期和免箱期相符、金额是否等于天数乘费率、
+#     币制是否合乎格式、箱号是否重复、是否残留模板占位符。
+#   → **免箱期（freeDays）与费率（rate）一律取自台账**，
+#     本插件**不内置任何船公司的免箱期或费率**。
+
+plugin: dsh-demurrage-ledger
+version: "2026.1"
+
+rules:
+  - id: DL-001
+    title: 滞箱费台账应填写箱号或提单号
+    severity: warn
+    basis:
+      document: 承运人运价本与运输合同（无国家标准）
+      number: 无统一标准（本条依据为台账可追溯性）
+      clause: 不属于标准条款（本条为台账齐备性核对）
+      excerpt: 本条依据为台账可追溯性要求，不存在可引用的标准条文；本规则库不伪造引文。
+      kind: derived-from-principle
+      source: https://www.gov.cn/
+    params:
+      check:
+        kind: presenceAny
+        fields: [containerNo, blNo]
+        fix: 补填箱号与提单号；本条只核对是否填写，不判断费用是否应当发生
+    note: >-
+      箱号与提单号是滞箱费台账**最低限度的可追溯信息**：缺其一，
+      费用就无法与具体的箱、具体的航次对应，核对与结算都失去落点。
+      **本条没有标准条文可引**：滞箱费由承运人运价本与运输合同约定，不存在全国统一标准，
+      故本条按"台账可追溯性"这一功能前提判定，并封顶 warn。
+      本条只核对"至少填了一个"，**不判断该笔费用是否应当发生**。
+
+  - id: DL-002
+    title: 免箱期起算日与还箱日期应可解析且先后成立
+    severity: warn
+    basis:
+      document: 承运人运价本与运输合同（无国家标准）
+      number: 无统一标准（本条依据为日期自洽）
+      clause: 不属于标准条款（本条为日期核对）
+      excerpt: 本条依据为日期先后自洽，不存在可引用的标准条文；本规则库不伪造引文。
+      kind: derived-from-principle
+      source: https://www.gov.cn/
+    params:
+      check:
+        kind: date
+        field: startAt
+        notAfterField: returnAt
+        fix: 还箱日期不应早于免箱期起算日；核对两个日期的填写
+    note: >-
+      "先起算、后还箱"是滞箱费计算的**时间前提**；日期可解析是台账能被程序处理的前提。
+      **本条没有标准条文可引**，故按功能前提判定并封顶 warn。
+      本条只比较两个日期（同一天视为不晚于），**不判断起算日的口径是否正确**——
+      起算日按提单／放箱／到港哪一种口径，取决于承运人运价本与合同，各船公司不同。
+      日期无法解析时会单独报出，**不会静默跳过**。
+
+  - id: DL-003
+    title: 超期天数应与还箱日期、起算日期和免箱期相符
+    severity: warn
+    basis:
+      document: 承运人运价本与运输合同（无国家标准）
+      number: 无统一标准（本条依据为算术自洽）
+      clause: 不属于标准条款（本条为算术核对）
+      excerpt: 本条依据为超期天数的算术定义，不存在可引用的标准条文；本规则库不伪造引文。
+      kind: derived-from-principle
+      source: https://www.gov.cn/
+    params:
+      check:
+        kind: derivedDays
+        daysField: overdueDays
+        fromField: startAt
+        toField: returnAt
+        subtractField: freeDays
+        tolerance: 0
+    note: >-
+      超期天数的算法是**定义式**：超期天数 = 还箱日期 − 起算日期 − 免箱期天数（不足一天不计）。
+      属纯算术核对，不涉及任何专业判断；**本条没有标准条文可引**，故封顶 warn。
+      本条只在**四个字段都有可解析值**时执行；缺任一项即进 skipped。
+      ⚠️ **起算日的口径**（提单日／放箱日／到港日）与**免箱期是否含节假日**
+      随承运人运价本与合同不同，本插件**不替使用方选定口径**——
+      台账里的 startAt 与 freeDays 应当已经是按合同口径算出的值。
+      容差 tolerance 出厂为 0；若台账按工作日或按小时计费，请调整容差或停用本条。
+
+  - id: DL-004
+    title: 滞箱费金额应等于超期天数与费率之积
+    severity: warn
+    basis:
+      document: 承运人运价本与运输合同（无国家标准）
+      number: 无统一标准（本条依据为算术自洽）
+      clause: 不属于标准条款（本条为算术核对）
+      excerpt: 本条依据为金额的算术定义，不存在可引用的标准条文；本规则库不伪造引文。
+      kind: derived-from-principle
+      source: https://www.gov.cn/
+    params:
+      check:
+        kind: productOf
+        resultField: amount
+        factorFields: [overdueDays, rate]
+        tolerance: 0.01
+    note: >-
+      金额 = 超期天数 × 费率是**定义式**，属纯算术核对；**本条没有标准条文可引**，故封顶 warn。
+      ⚠️ 实务中费率常**分段递增**（例如第 1~7 天一个费率、第 8 天起更高），
+      此时单一 rate 栏无法表达，台账若按分段计费填写，本条会报差异——
+      请改为停用本条，或把台账改为填写"平均费率"并在备注说明。
+      容差出厂 0.01，用于容纳小数进位。
+      本条**不判断费率是否合理、是否与运价本一致**。
+
+  - id: DL-005
+    title: 币制应使用三位字母代码
+    severity: warn
+    basis:
+      document: 《表示货币的代码》
+      number: GB/T 12406—2022（表示货币的代码；2022-12-30 发布并实施；全部代替 GB/T 12406—2008（该版名称为「表示货币和资金的代码」）——注意旧版名称含"资金"；修改采用 ISO 4217:2015，非等同采用；条号本次未取得）
+      clause: 关于货币代码的规定（本次未取得条号）
+      excerpt: 该条文本次未取得：核查未获得 GB/T 12406 的逐字原文，本规则库不伪造引文。
+      kind: derived-from-principle
+      source: https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=196111BC23AC8BDA0BE2C44F2C32F6CF
+    params:
+      check:
+        kind: pattern
+        field: currency
+        pattern: ^[A-Z]{3}$
+        fix: 币制应写成三位大写字母代码（如 USD、EUR、CNY）
+    note: >-
+      币制只有写成统一的三位字母代码，金额才能与其他台账比对与汇总。
+      这一层是纯格式判断，不涉及任何实质认定；本次未取得明文条号，故封顶 warn。
+      本条**不判断币制选择是否正确**——那取决于实际结算币别与合同约定。
+
+  - id: DL-006
+    title: 箱号不应在台账内重复登记
+    severity: warn
+    basis:
+      document: 承运人运价本与运输合同（无国家标准）
+      number: 无统一标准（本条依据为台账唯一性）
+      clause: 不属于标准条款（本条为台账唯一性核对）
+      excerpt: 本条依据为台账唯一性要求，不存在可引用的标准条文；本规则库不伪造引文。
+      kind: derived-from-principle
+      source: https://www.gov.cn/
+    params:
+      check:
+        kind: unique
+        field: containerNo
+    note: >-
+      同一个箱号在台账里出现两次，会让人无法判断是重复登记还是确有两次超期。
+      **本条没有标准条文可引**，故按可核对性判定并封顶 warn。比较时忽略空白字符。
+      命中需人工确认：同一箱分批还箱、或先滞箱后退箱再滞箱的情况确实可能产生多行，
+      此时应在备注栏说明，而不是简单删除。
+
+  - id: DL-007
+    title: 台账备注栏不应残留未替换的占位符
+    severity: warn
+    basis:
+      document: 承运人运价本与运输合同（无国家标准）
+      number: 无统一标准（本条依据为台账真实性）
+      clause: 不属于标准条款（本条为台账真实性核对）
+      excerpt: 本条依据为台账内容真实性要求，不存在可引用的标准条文；本规则库不伪造引文。
+      kind: derived-from-principle
+      source: https://www.gov.cn/
+    params:
+      check:
+        kind: containsAny
+        field: note
+        terms: ['【', '】', '{{', '}}', 'XXX', 'xxx', '待填', '待补充', 'TBD', 'todo', '示例']
+        fix: 备注栏应填写实际内容；残留占位符说明台账是照模板抄的
+    note: >-
+      台账若直接照抄模板，备注栏常留下【】、XXX、待填、TBD 之类占位符。
+      这会让人误以为已经核对了实际费用——**这是台账类工具最危险的失效方式**。
+      **本条没有标准条文可引**，故封顶 warn。terms 可按本机构模板调整。
+
+disabled: []
