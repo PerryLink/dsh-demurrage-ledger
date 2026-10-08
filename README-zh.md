@@ -42,8 +42,7 @@ recoverable. **Those depend on the contract, the allocation of responsibility an
 ## Install
 
 ```sh
-pnpm pack
-dsh plugin --profile <name> add ./*.tgz
+dsh plugin --profile <name> add dsh-demurrage-ledger
 dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
 ```
 
