@@ -1,4 +1,28 @@
-# dsh-demurrage-ledger
+# dsh-demurrage-ledger — Demurrage and detention ledger completeness and arithmetic check
+
+`dsh-demurrage-ledger` reads one demurrage and detention ledger (滞箱费台账) — the header plus one row per container — and checks that ledger's own completeness and arithmetic: that each row records at least a container number or a bill of lading, that the free-period start and the return date parse and follow each other, that the overdue days equal the gap between those two dates less the free days, that the charge equals the overdue days × the rate, that the currency is written as a three-letter code, that no container number is repeated, and that no unreplaced template placeholder survives in the remark. The free days and the rate are read from the ledger itself, whose columns may be named in Chinese or in English.
+
+## What it answers
+
+| You ask | What it answers |
+|---|---|
+| A row has both the container number and the bill of lading blank. Will the check say anything? | Yes. `DL-001` requires `containerNo` or `blNo` to be filled on every row the ledger gives at least one of those two columns, and reports the row when both are empty. It checks only that one of them is filled, not whether the charge should have arisen. A ledger carrying neither column makes the rule list itself in `skipped` rather than passing silently. |
+| The start date was typed as `15/03/2026` and the return date falls before it. What does the rule do? | `DL-002` parses `startAt` and compares it with `returnAt`: a value it cannot read as a date is reported on that row rather than passed over, and a start date later than the return date is reported too — the same day counts as not later. It compares those two dates only; which start convention applies (bill of lading, release or arrival) is left to the carrier's tariff and the contract. |
+| The overdue days column says 10, but the two dates and the free period give 7. Is that caught? | Yes. `DL-003` recomputes the days as `returnAt` − `startAt` − `freeDays` and reports the row when the declared `overdueDays` differ by more than the configured `tolerance`, which is 0 by default. It runs only on rows where all four values are present and parse; when no row carries all four, the rule reports itself in `skipped`. The start convention and whether the free period counts holidays stay with the contract — for a working-day or hourly basis, raise the tolerance or disable the rule. |
+| The charge does not equal the overdue days times the rate — and my tariff steps up after the first week. | `DL-004` multiplies `overdueDays` × `rate` and reports the row when `amount` differs by more than the `tolerance`, 0.01 by default. It does not judge whether the rate is reasonable or whether it matches the tariff. A stepped tariff cannot be expressed in one `rate` cell, so such a ledger will report a difference: disable the rule, or record an average rate and say so in the remark. |
+| The currency cell says `美元`, or `usd`. Is that reported? | Yes. `DL-005` reports any `currency` value that does not match the pack's pattern, `^[A-Z]{3}$` by default — three upper-case letters such as `USD`. It is a form check only and does not judge whether that currency is the right one for the settlement. Its basis is the one public standard the pack cites, and its excerpt records that the clause text was not obtained, so the rule stays at warn. A ledger with no currency column makes the rule report itself in `skipped`. |
+| The same container number appears on two rows. Is that a duplicate entry? | `DL-006` reports the row when a `containerNo` value repeats, comparing with whitespace ignored, and names the earlier row it matches. It checks uniqueness only, and a hit needs human confirmation: a box returned in stages, or released and then detained again, can legitimately take two rows — say so in the remark rather than deleting a row. With no `containerNo` column the rule reports that it could not run instead of passing silently. |
+
+## Standards it follows
+
+| Document | Number | Cited by rules |
+|---|---|---|
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为台账可追溯性） | DL-001 |
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为日期自洽） | DL-002 |
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为算术自洽） | DL-003, DL-004 |
+| 《表示货币的代码》 | GB/T 12406—2022（表示货币的代码；2022-12-30 发布并实施；全部代替 GB/T 12406—2008（该版名称为「表示货币和资金的代码」）——注意旧版名称含"资金"；修改采用 ISO 4217:2015，非等同采用；条号本次未取得） | DL-005 |
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为台账唯一性） | DL-006 |
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为台账真实性） | DL-007 |
 
 **Boundary:** this plugin checks a **滞箱费台账** for arithmetic and completeness — that a container or bill of
 lading is recorded, that the free-period start and the return date parse and follow each other, that the

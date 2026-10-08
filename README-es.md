@@ -1,4 +1,28 @@
-# dsh-demurrage-ledger
+# dsh-demurrage-ledger — Verificación de integridad y aritmética del libro de demoras y detenciones de contenedores
+
+`dsh-demurrage-ledger` lee un libro de demoras y detenciones de contenedores (滞箱费台账) —la cabecera más una fila por contenedor— y comprueba la integridad y la aritmética de ese mismo libro: que cada fila registre al menos un número de contenedor o un conocimiento de embarque, que la fecha de inicio del periodo libre y la fecha de devolución se puedan analizar y sean coherentes entre sí, que los días de exceso sean iguales a la diferencia entre esas dos fechas menos los días libres, que el importe sea igual a los días de exceso × la tarifa, que la moneda se escriba como código de tres letras, que no se repita ningún número de contenedor y que no quede ningún marcador de plantilla sin sustituir en la observación. Los días libres y la tarifa se toman del propio libro, cuyas columnas pueden estar en chino o en inglés.
+
+## Qué responde
+
+| Usted pregunta | Qué responde |
+|---|---|
+| Una fila tiene vacíos tanto el número de contenedor como el conocimiento de embarque. ¿Se informa de algo? | Sí. `DL-001` exige que en cada fila a la que el libro da al menos una de esas dos columnas esté relleno `containerNo` o `blNo`, e informa de la fila cuando ambas están vacías. Solo comprueba que uno de los dos esté puesto, no si el cargo debió producirse. Si el libro no trae ninguna de las dos columnas, la regla se nombra a sí misma en `skipped` en lugar de pasar en silencio. |
+| La fecha de inicio se escribió como `15/03/2026` y la fecha de devolución es anterior. ¿Qué hace la regla? | `DL-002` analiza `startAt` y lo compara con `returnAt`: un valor que no puede leer como fecha se informa en esa fila en lugar de omitirse, y una fecha de inicio posterior a la de devolución también se informa; el mismo día cuenta como no posterior. Solo compara esas dos fechas: qué convención de inicio se aplica (conocimiento de embarque, entrega o llegada) queda para la tarifa del transportista y el contrato. |
+| La columna de días de exceso dice 10, pero las dos fechas y el periodo libre dan 7. ¿Se detecta? | Sí. `DL-003` recalcula los días como `returnAt` − `startAt` − `freeDays` e informa de la fila cuando el `overdueDays` declarado difiere en más de la `tolerance` configurada, 0 por defecto. Solo se ejecuta en filas con los cuatro valores presentes y analizables; cuando ninguna fila los reúne, la regla se informa en `skipped`. La convención de inicio y si el periodo libre cuenta festivos siguen siendo del contrato: para una base de días laborables o de horas, suba la tolerancia o desactive la regla. |
+| El importe no es igual a los días de exceso por la tarifa, y mi tarifa se escalona. ¿Se informa? | `DL-004` multiplica `overdueDays` × `rate` e informa de la fila cuando `amount` difiere en más de la `tolerance`, 0.01 por defecto. No juzga si la tarifa es razonable ni si coincide con la del transportista. Una tarifa escalonada no cabe en una sola celda `rate`, así que ese libro informará de una diferencia: desactive la regla, o registre una tarifa media y dígalo en la observación. |
+| La celda de moneda dice `美元`, o `usd`. ¿Se informa? | Sí. `DL-005` informa de todo valor de `currency` que no coincida con el patrón del paquete, `^[A-Z]{3}$` por defecto: tres letras mayúsculas como `USD`. Es solo una comprobación de forma y no juzga si esa moneda es la correcta para la liquidación. Su base es la única norma pública que cita el paquete, y su excerpt deja constancia de que el texto del artículo no se obtuvo, por lo que la regla se queda en warn. Sin columna de moneda, la regla se nombra en `skipped`. |
+| El mismo número de contenedor aparece en dos filas. ¿Es un registro duplicado? | `DL-006` informa de la fila cuando un valor de `containerNo` se repite, comparando sin espacios, y señala la fila anterior con la que coincide. Solo comprueba la unicidad, y un hallazgo requiere confirmación humana: un contenedor devuelto por etapas, o liberado y vuelto a retener, puede ocupar legítimamente dos filas — dígalo en la observación en vez de borrar una fila. Sin columna `containerNo`, la regla informa de que no pudo ejecutarse en lugar de pasar en silencio. |
+
+## Normas que sigue
+
+| Documento | Número | Reglas que lo citan |
+|---|---|---|
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为台账可追溯性） | DL-001 |
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为日期自洽） | DL-002 |
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为算术自洽） | DL-003, DL-004 |
+| 《表示货币的代码》 | GB/T 12406—2022（表示货币的代码；2022-12-30 发布并实施；全部代替 GB/T 12406—2008（该版名称为「表示货币和资金的代码」）——注意旧版名称含"资金"；修改采用 ISO 4217:2015，非等同采用；条号本次未取得） | DL-005 |
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为台账唯一性） | DL-006 |
+| 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为台账真实性） | DL-007 |
 
 **Boundary:** this plugin checks a **滞箱费台账** for arithmetic and completeness — that a container or bill of
 lading is recorded, that the free-period start and the return date parse and follow each other, that the
