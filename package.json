@@ -1,6 +1,6 @@
 {
   "name": "dsh-demurrage-ledger",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "滞箱费台账核对（按免箱期与费率核对超期天数与金额的自洽性，仅提示差异，不作出定性结论）",
   "type": "module",
   "main": "lib/index.mjs",
