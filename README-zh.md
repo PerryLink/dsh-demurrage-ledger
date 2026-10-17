@@ -47,7 +47,7 @@ recoverable. **Those depend on the contract, the allocation of responsibility an
 > rates differ between carriers, trades and container types, and **no unified national standard exists**. So
 > this pack does **not** fabricate a standard number: every rule's `excerpt` states plainly that its basis is
 > arithmetic self-consistency or ledger traceability and that **no citable clause exists**. The one exception
-> is the currency format, whose home is GB/T 12406 (identical to ISO 4217), and that excerpt says the clause
+> is the currency format, whose home is GB/T 12406 (modified adoption of ISO 4217:2015, not identical), and that excerpt says the clause
 > text was not obtained. A test asserts that every excerpt carries one of those admissions.
 >
 > **The plugin ships no carrier's free period and no rate.** Both come from the ledger. Two consequences are

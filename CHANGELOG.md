@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.7] - 2026-10-18
+
+### Fixed
+
+- **README no longer calls GB/T 12406 identical to ISO 4217.** It is a modified adoption of ISO 4217:2015. Added the missing `rules/evidence/clause-verification-standard-currency.md` note that the rule pack already referenced; citations gate and README sync stay green.
+
 ## [0.2.6] - 2026-10-18
 
 ### Changed
