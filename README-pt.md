@@ -4,6 +4,13 @@
 
 `dsh-demurrage-ledger` lê um registo de demoras e detenções de contentores (滞箱费台账) —o cabeçalho mais uma linha por contentor— e verifica a integridade e a aritmética desse mesmo registo: se cada linha regista pelo menos um número de contentor ou um conhecimento de embarque, se a data de início do período livre e a data de devolução são analisáveis e coerentes entre si, se os dias de excesso são iguais à diferença entre essas duas datas menos os dias livres, se o montante é igual aos dias de excesso × a tarifa, se a moeda está escrita como código de três letras, se não há números de contentor repetidos e se não resta nenhum marcador de modelo por substituir na observação. Os dias livres e a tarifa são lidos do próprio registo, cujas colunas podem ter nomes em chinês ou em inglês.
 
+## Install
+
+```sh
+dsh plugin --profile <name> add dsh-demurrage-ledger
+dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
+```
+
 ## Como é a saída
 
 ![Terminal demo of dsh-demurrage-ledger: real output over its DL-002 fixture](https://raw.githubusercontent.com/PerryLink/dsh-demurrage-ledger/main/docs/assets/dsh-demurrage-ledger-hero.png)
@@ -72,13 +79,6 @@ recoverable. **Those depend on the contract, the allocation of responsibility an
 ## What it does
 
 A tabela de regras, os campos e o comportamento detalhado estão em [README.md](README.md#what-it-does) (versão principal em inglês). O plugin apenas lista divergências literais frente às cláusulas citadas e indica em `skipped` cada verificação que não pôde ser executada.
-
-## Install
-
-```sh
-dsh plugin --profile <name> add dsh-demurrage-ledger
-dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
-```
 
 ## Configuration
 

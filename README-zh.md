@@ -4,6 +4,13 @@
 
 `dsh-demurrage-ledger` 读取一份滞箱费台账（表头加每个集装箱一行），核对这份台账自身的齐备与算术：每行是否至少填写了箱号或提单号、免箱期起算日与还箱日期是否可解析且先后成立、超期天数是否等于两个日期之差减去免箱期、金额是否等于超期天数乘以费率、币制是否写成三位字母代码、箱号是否重复、备注栏是否残留未替换的模板占位符。免箱期与费率一律取自台账本身，台账的列名可以是中文，也可以是英文。
 
+## Install
+
+```sh
+dsh plugin --profile <name> add dsh-demurrage-ledger
+dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
+```
+
 ## 实际输出长什么样
 
 ![Terminal demo of dsh-demurrage-ledger: real output over its DL-002 fixture](https://raw.githubusercontent.com/PerryLink/dsh-demurrage-ledger/main/docs/assets/dsh-demurrage-ledger-hero.png)
@@ -72,13 +79,6 @@ recoverable. **Those depend on the contract, the allocation of responsibility an
 ## What it does
 
 规则表、字段说明与行为细节见 [README.md](README.md#what-it-does)（英文主版本）。本插件只列出材料与所引条款之间的字面差异，并对无法执行的检查在 `skipped` 中逐项说明。
-
-## Install
-
-```sh
-dsh plugin --profile <name> add dsh-demurrage-ledger
-dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
-```
 
 ## Configuration
 
