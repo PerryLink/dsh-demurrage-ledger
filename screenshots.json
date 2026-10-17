@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/assets/dsh-demurrage-ledger-hero.png",
+    "kind": "hero",
+    "alt": "dsh-demurrage-ledger terminal output",
+    "caption": "Real dsh-demurrage-ledger checker output; 31 tests passed."
+  },
+  {
+    "path": "docs/assets/dsh-demurrage-ledger-demo.gif",
+    "kind": "demo",
+    "alt": "Animated dsh-demurrage-ledger terminal session",
+    "caption": "The same run, assembled line by line."
+  }
+]
