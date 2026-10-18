@@ -43,12 +43,7 @@ dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
 | 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为台账唯一性） | DL-006 |
 | 承运人运价本与运输合同（无国家标准） | 无统一标准（本条依据为台账真实性） | DL-007 |
 
-**Boundary:** this plugin checks a **滞箱费台账** for arithmetic and completeness — that a container or bill of
-lading is recorded, that the free-period start and the return date parse and follow each other, that the
-overdue days equal the gap between those dates less the free days, that the charge equals days × rate, that
-the currency follows its format, and that container numbers do not repeat. It does **not** decide who bears
-the charge, whether a rate is reasonable, whether a waiver is available, or whether the amount is
-recoverable. **Those depend on the contract, the allocation of responsibility and commercial negotiation.**
+**边界（中文译文，以英文原文为准）：** 本插件核对一份 **滞箱费台账** 的算术与齐备性——是否记录了箱号或提单号，免箱期起算日与还箱日期是否可解析且先后成立，超期天数是否等于两个日期之差减去免箱期，金额是否等于超期天数 × 费率，币制是否符合其形式，以及箱号是否不重复。它**不**判定费用由谁承担、费率是否合理、是否可以减免，也不判定该金额是否可追偿。**这些取决于合同、责任划分与商业谈判。**
 
 > ### ⚠️ There is no national standard for this, and the pack does not pretend otherwise
 >
