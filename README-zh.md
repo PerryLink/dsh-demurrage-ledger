@@ -45,24 +45,22 @@ dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
 
 **边界（中文译文，以英文原文为准）：** 本插件核对一份 **滞箱费台账** 的算术与齐备性——是否记录了箱号或提单号，免箱期起算日与还箱日期是否可解析且先后成立，超期天数是否等于两个日期之差减去免箱期，金额是否等于超期天数 × 费率，币制是否符合其形式，以及箱号是否不重复。它**不**判定费用由谁承担、费率是否合理、是否可以减免，也不判定该金额是否可追偿。**这些取决于合同、责任划分与商业谈判。**
 
-> ### ⚠️ There is no national standard for this, and the pack does not pretend otherwise
+> ### ⚠️ 此事没有国家标准，规则包也不假装有（以英文原文为准）
 >
-> Demurrage and detention are set by **each carrier's tariff and the contract of carriage** — free periods and
-> rates differ between carriers, trades and container types, and **no unified national standard exists**. So
-> this pack does **not** fabricate a standard number: every rule's `excerpt` states plainly that its basis is
-> arithmetic self-consistency or ledger traceability and that **no citable clause exists**. The one exception
-> is the currency format, whose home is GB/T 12406 (modified adoption of ISO 4217:2015, not identical), and that excerpt says the clause
-> text was not obtained. A test asserts that every excerpt carries one of those admissions.
+> 滞期费与滞箱费由**各承运人的运价表与运输合同**确定——免用期与费率因承运人、航线与箱型而异，
+> **不存在统一的国家标准**。因此，本规则包**不**编造标准编号：每条规则的 `excerpt` 都直白写明，
+> 其依据是算术自洽性或台账可追溯性，且**不存在可援引的条款**。唯一的例外是币制格式，其依据为
+> GB/T 12406（修改采用 ISO 4217:2015，非等同采用），该条 excerpt 写明本次未取得条款原文。
+> 有测试断言每条 excerpt 都带有上述某一种承认。
 >
-> **The plugin ships no carrier's free period and no rate.** Both come from the ledger. Two consequences are
-> worth knowing before trusting a finding:
+> **本插件不提供任何承运人的免用期，也不提供任何费率。** 两者都来自台账。在采信一条发现之前，
+> 有两个后果值得知道：
 >
-> - **Segmented rates break `DL-004`.** Tariffs commonly step up (one rate for days 1–7, a higher one from
->   day 8). A single `rate` column cannot express that, so a ledger priced in segments will report a
->   difference. Disable the rule, or record an average rate with a note that says so.
-> - **`DL-003` does not choose the start convention.** Whether the clock starts at the bill of lading, at
->   release, or at arrival — and whether the free period includes holidays — is the contract's business. The
->   ledger's `起算日期` and `免箱期` are assumed to already follow it.
+> - **分段费率会使 `DL-004` 失效。** 运价表通常分段递增（第 1–7 天一个费率，从第 8 天起一个
+>   更高的费率）。单一的 `rate` 栏无法表达这一点，因此按分段计价的台账会报出差额。请停用该规则，
+>   或记录一个平均费率并附注说明。
+> - **`DL-003` 不选择起算惯例。** 计时钟是从提单、放货还是到港起算——以及免用期是否包含节假日——属于合同约定事项。
+>   台账的 `起算日期` 与 `免箱期` 被假定已遵循该约定。
 
 ## Compatibility
 
