@@ -20,13 +20,18 @@ dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
 
 ## Como é a saída
 
-![Terminal demo of dsh-demurrage-ledger: real output over its DL-002 fixture](https://raw.githubusercontent.com/PerryLink/dsh-demurrage-ledger/main/docs/assets/dsh-demurrage-ledger-hero.png)
+![Diagrama de fluxo de dsh-demurrage-ledger: chamada → plugin → resultado.](docs/assets/dsh-demurrage-ledger-flow.svg)
 
-![Animated terminal demo of dsh-demurrage-ledger](https://raw.githubusercontent.com/PerryLink/dsh-demurrage-ledger/main/docs/assets/dsh-demurrage-ledger-demo.gif)
+*Visão geral do fluxo: chamada → plugin → resultado. Os exemplos abaixo usam a superfície real de comandos.*
+
 
 Saída real deste plugin sobre o seu próprio fixture de teste `DL-002` — não é uma simulação. O pacote de regras não inventa citações, por isso cada achado nomeia a cláusula aplicada e avisa que o seu texto não foi obtido.
 
 ## O que ele responde
+
+### Exemplos
+
+A tabela abaixo é o conjunto de exemplos: a primeira linha é o caso detalhado e as demais são casos curtos.
 
 | Você pergunta | O que ele responde |
 |---|---|

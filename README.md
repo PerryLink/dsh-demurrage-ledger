@@ -15,13 +15,17 @@ dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
 
 ## What it looks like
 
-![Terminal demo of dsh-demurrage-ledger: real output over its DL-002 fixture](https://raw.githubusercontent.com/PerryLink/dsh-demurrage-ledger/main/docs/assets/dsh-demurrage-ledger-hero.png)
+![Workflow diagram for dsh-demurrage-ledger: call → plugin → result.](docs/assets/dsh-demurrage-ledger-flow.svg)
 
-![Animated terminal demo of dsh-demurrage-ledger](https://raw.githubusercontent.com/PerryLink/dsh-demurrage-ledger/main/docs/assets/dsh-demurrage-ledger-demo.gif)
+*Workflow overview: call → plugin → result. The examples below use the real command surface.*
 
-Real output from this plugin over its own `DL-002` test fixture — not a mock-up. The rule pack ships no invented quotations, so a finding names both the clause it applied and the fact that the clause text was not obtained.
+
 
 ## What it answers
+
+### Examples
+
+The table below is the example set: the first row is the detailed walkthrough, the remaining rows are short cases.
 
 | You ask | What it answers |
 |---|---|
