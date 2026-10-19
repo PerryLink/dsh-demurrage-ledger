@@ -28,6 +28,35 @@ dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
 
 The table below is the example set: the first row is the detailed walkthrough, the remaining rows are short cases.
 
+#### Detailed output
+
+**Tool** `demurrage_ledger`
+
+**Input**
+
+~~~json
+{"rows":[{"箱号":"","提单号":"","箱型":"40HQ", ...}]}
+~~~
+ 
+**Output**
+
+~~~json
+{
+  "id": "dsh-demurrage-ledger.DL-001.de09b5a6",
+  "ruleId": "DL-001",
+  "severity": "warn",
+  "locator": {
+    "row": 1,
+    "field": "containerNo"
+  },
+  "found": "第 1 行 containerNo、blNo 都为空",
+  "expected": "containerNo、blNo 至少应填写一项",
+  "fix": "补填箱号与提单号；本条只核对是否填写，不判断费用是否应当发生"
+}
+~~~
+
+*Observed from `dsh-demurrage-ledger/tests/fixtures/DL-001/DL-001-unsafe.json; dsh-demurrage-ledger/tests/fixtures/DL-001/cases.json; dsh-demurrage-ledger/rules/demurrage-ledger.yaml; dsh-demurrage-ledger/tests/index.test.ts`*
+
 | You ask | What it answers |
 |---|---|
 | A row has both the container number and the bill of lading blank. Will the check say anything? | Yes. `DL-001` requires `containerNo` or `blNo` to be filled on every row the ledger gives at least one of those two columns, and reports the row when both are empty. It checks only that one of them is filled, not whether the charge should have arisen. A ledger carrying neither column makes the rule list itself in `skipped` rather than passing silently. |

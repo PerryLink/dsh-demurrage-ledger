@@ -29,6 +29,35 @@ dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
 
 下表是示例集：第一行是详细走查，其余行是简短案例。
 
+#### 详细输出
+
+**工具** `demurrage_ledger`
+
+**输入**
+
+~~~json
+{"rows":[{"箱号":"","提单号":"","箱型":"40HQ", ...}]}
+~~~
+ 
+**输出**
+
+~~~json
+{
+  "id": "dsh-demurrage-ledger.DL-001.de09b5a6",
+  "ruleId": "DL-001",
+  "severity": "warn",
+  "locator": {
+    "row": 1,
+    "field": "containerNo"
+  },
+  "found": "第 1 行 containerNo、blNo 都为空",
+  "expected": "containerNo、blNo 至少应填写一项",
+  "fix": "补填箱号与提单号；本条只核对是否填写，不判断费用是否应当发生"
+}
+~~~
+
+*来源 `dsh-demurrage-ledger/tests/fixtures/DL-001/DL-001-unsafe.json; dsh-demurrage-ledger/tests/fixtures/DL-001/cases.json; dsh-demurrage-ledger/rules/demurrage-ledger.yaml; dsh-demurrage-ledger/tests/index.test.ts`*
+
 | 你会问 | 它怎么答 |
 |---|---|
 | 某行的箱号与提单号都是空的，会被报出来吗？ | 会。`DL-001` 对台账给了 `containerNo`、`blNo` 这两栏之一的每一行，要求至少填写其中一项，两项都空即报出该行。它只核对是否填写，不判断这笔费用是否应当发生。台账两栏都没有时，本条会在 `skipped` 中列出自己，而不是静默通过。 |

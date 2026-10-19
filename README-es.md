@@ -34,6 +34,35 @@ Salida real de este plugin sobre su propio fixture de prueba `DL-002` — no es 
 
 La tabla siguiente es el conjunto de ejemplos: la primera fila es el caso detallado y las demás son casos breves.
 
+#### Salida detallada
+
+**Herramienta** `demurrage_ledger`
+
+**Entrada**
+
+~~~json
+{"rows":[{"箱号":"","提单号":"","箱型":"40HQ", ...}]}
+~~~
+ 
+**Salida**
+
+~~~json
+{
+  "id": "dsh-demurrage-ledger.DL-001.de09b5a6",
+  "ruleId": "DL-001",
+  "severity": "warn",
+  "locator": {
+    "row": 1,
+    "field": "containerNo"
+  },
+  "found": "第 1 行 containerNo、blNo 都为空",
+  "expected": "containerNo、blNo 至少应填写一项",
+  "fix": "补填箱号与提单号；本条只核对是否填写，不判断费用是否应当发生"
+}
+~~~
+
+*Observado en `dsh-demurrage-ledger/tests/fixtures/DL-001/DL-001-unsafe.json; dsh-demurrage-ledger/tests/fixtures/DL-001/cases.json; dsh-demurrage-ledger/rules/demurrage-ledger.yaml; dsh-demurrage-ledger/tests/index.test.ts`*
+
 | Usted pregunta | Qué responde |
 |---|---|
 | Una fila tiene vacíos tanto el número de contenedor como el conocimiento de embarque. ¿Se informa de algo? | Sí. `DL-001` exige que en cada fila a la que el libro da al menos una de esas dos columnas esté relleno `containerNo` o `blNo`, e informa de la fila cuando ambas están vacías. Solo comprueba que uno de los dos esté puesto, no si el cargo debió producirse. Si el libro no trae ninguna de las dos columnas, la regla se nombra a sí misma en `skipped` en lugar de pasar en silencio. |

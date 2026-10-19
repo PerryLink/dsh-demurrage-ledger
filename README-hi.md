@@ -29,6 +29,35 @@ dsh --profile <name> --dump-config | grep 'dsh-demurrage-ledger'
 
 नीचे दी गई तालिका उदाहरण-समुच्चय है: पहली पंक्ति विस्तृत केस है, बाकी संक्षिप्त केस हैं।
 
+#### विस्तृत आउटपुट
+
+**उपकरण** `demurrage_ledger`
+
+**इनपुट**
+
+~~~json
+{"rows":[{"箱号":"","提单号":"","箱型":"40HQ", ...}]}
+~~~
+ 
+**आउटपुट**
+
+~~~json
+{
+  "id": "dsh-demurrage-ledger.DL-001.de09b5a6",
+  "ruleId": "DL-001",
+  "severity": "warn",
+  "locator": {
+    "row": 1,
+    "field": "containerNo"
+  },
+  "found": "第 1 行 containerNo、blNo 都为空",
+  "expected": "containerNo、blNo 至少应填写一项",
+  "fix": "补填箱号与提单号；本条只核对是否填写，不判断费用是否应当发生"
+}
+~~~
+
+*स्रोत `dsh-demurrage-ledger/tests/fixtures/DL-001/DL-001-unsafe.json; dsh-demurrage-ledger/tests/fixtures/DL-001/cases.json; dsh-demurrage-ledger/rules/demurrage-ledger.yaml; dsh-demurrage-ledger/tests/index.test.ts`*
+
 | आपका सवाल | इसका जवाब |
 |---|---|
 | एक पंक्ति में कंटेनर क्रमांक और बिल ऑफ़ लेडिंग दोनों खाली हैं। क्या कुछ बताया जाएगा? | हाँ। `DL-001` उन हर पंक्ति में, जिसे बही इन दो कॉलमों में से कम से कम एक देती है, `containerNo` या `blNo` में से एक भरा होने की अपेक्षा करता है, और दोनों खाली होने पर उस पंक्ति को दर्ज करता है। यह केवल देखता है कि इनमें से एक भरा है, यह नहीं कि शुल्क बनना ही चाहिए था। बही में ये दोनों कॉलम ही न हों तो नियम चुपचाप पास होने के बजाय `skipped` में स्वयं को दर्ज करता है। |

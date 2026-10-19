@@ -34,6 +34,35 @@ Saída real deste plugin sobre o seu próprio fixture de teste `DL-002` — não
 
 A tabela abaixo é o conjunto de exemplos: a primeira linha é o caso detalhado e as demais são casos curtos.
 
+#### Saída detalhada
+
+**Ferramenta** `demurrage_ledger`
+
+**Entrada**
+
+~~~json
+{"rows":[{"箱号":"","提单号":"","箱型":"40HQ", ...}]}
+~~~
+ 
+**Saída**
+
+~~~json
+{
+  "id": "dsh-demurrage-ledger.DL-001.de09b5a6",
+  "ruleId": "DL-001",
+  "severity": "warn",
+  "locator": {
+    "row": 1,
+    "field": "containerNo"
+  },
+  "found": "第 1 行 containerNo、blNo 都为空",
+  "expected": "containerNo、blNo 至少应填写一项",
+  "fix": "补填箱号与提单号；本条只核对是否填写，不判断费用是否应当发生"
+}
+~~~
+
+*Observado em `dsh-demurrage-ledger/tests/fixtures/DL-001/DL-001-unsafe.json; dsh-demurrage-ledger/tests/fixtures/DL-001/cases.json; dsh-demurrage-ledger/rules/demurrage-ledger.yaml; dsh-demurrage-ledger/tests/index.test.ts`*
+
 | Você pergunta | O que ele responde |
 |---|---|
 | Uma linha tem vazios tanto o número do contentor como o conhecimento de embarque. Isso é reportado? | Sim. `DL-001` exige que, em cada linha a que o registo dá pelo menos uma dessas duas colunas, esteja preenchido `containerNo` ou `blNo`, e reporta a linha quando ambos estão vazios. Verifica apenas que um dos dois está preenchido, não se o encargo deveria ter ocorrido. Se o registo não trouxer nenhuma das duas colunas, a regra indica-se a si própria em `skipped` em vez de passar em silêncio. |
