@@ -1,0 +1,10 @@
+{
+  "tool": "demurrage_ledger",
+  "issueCount": 1,
+  "summary": {
+    "error": 0,
+    "warn": 1,
+    "info": 0
+  },
+  "skippedCount": 1
+}
