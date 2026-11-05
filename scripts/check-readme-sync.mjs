@@ -1,13 +1,15 @@
-// Five-language README sync gate: every README must carry the same number of
-// `## ` sections as the English source, state the published install command,
-// and contain every configuration-table key. Section headings may be
-// translated; the English file is the source of truth.
+// README sync gate (A mode): the Chinese main `README.md` must carry the same
+// number of `## ` sections as the English source `README.en.md`, state the
+// published install command, and contain every configuration-table key.
+// Section headings may be translated; `README.en.md` is the source of truth.
+// The dotted es/pt/hi translations are maintained alongside it and are not
+// read here.
 import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
-const FILES = ['README.md', 'README-zh.md', 'README-es.md', 'README-pt.md', 'README-hi.md']
+const FILES = ['README.en.md', 'README.md']
 const INSTALL_COMMAND = 'dsh plugin --profile <name> add dsh-demurrage-ledger'
 
 const failures = []
