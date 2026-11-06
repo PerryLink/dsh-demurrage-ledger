@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-flow-dark.svg">
-  <img src="docs/assets/dsh-demurrage-ledger-flow-light.svg" width="100%" alt="dsh-demurrage-ledger 数据流：滞箱费台账（JSON/YAML）→ demurrage_ledger → 规则库 DL-001…DL-007 → 报告（issues + skipped）">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-hero-zh-dark.webp">
+  <img src="docs/assets/dsh-demurrage-ledger-hero-zh-light.webp" width="100%" alt="dsh-demurrage-ledger 横幅：台账的一行 → DL-003 日期与免箱期算式 → 一条带定位的发现（第 2 行 overdueDays）">
 </picture>
 
 # dsh-demurrage-ledger
@@ -38,6 +38,11 @@ dsh plugin --profile <name> add dsh-demurrage-ledger
 `dsh-demurrage-ledger` 读取一份滞箱费台账（表头加每个集装箱一行），核对这份台账自身的齐备与算术：每行是否至少填写了箱号或提单号、免箱期起算日与还箱日期是否可解析且先后成立、超期天数是否等于两个日期之差减去免箱期、金额是否等于超期天数乘以费率、币制是否写成三位字母代码、箱号是否重复、备注栏是否残留未替换的模板占位符。免箱期与费率一律取自台账本身，台账的列名可以是中文，也可以是英文。
 
 它只列「材料内部能逐条指认的差异」：不判定费用由谁承担、费率是否合理、能否减免，也不判定金额是否可追偿——这些取决于承运人运价本、运输合同与商业谈判。全程纯内存计算：不联网、不调用模型、不改动你交进来的原件。
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-demurrage-ledger-flow-v5-light.svg" width="100%" alt="dsh-demurrage-ledger 字段 × 规则矩阵：7 条规则只读取 10 个台账字段；实心圆点为报出定位字段（locator.field），空心圆环为参与对照字段；命中写入 issues[]，无法执行写入 skipped[]">
+</picture>
 
 ## 三步上手
 
@@ -310,7 +315,7 @@ node ../scripts/sync-shared.mjs dsh-demurrage-ledger   # 刷新 src/shared
 
 插件是 **data-only** 的：`src/model.ts` 声明表格形状，共享件提供读取器与检查引擎，规则库声明每一项检查。发布前 `prepublishOnly` 会重跑门禁，未构建或漂移的树无法出包。
 
-配图由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成（手写 SVG 深浅双版，图内只放命令与配置 token），可重复执行：`python scripts/gen-readme-assets.py`。
+配图由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成：Pillow 画 zh/en 深浅四张 hero 横幅，字段 × 规则矩阵是手写的深浅双版 SVG；可重复执行：`python scripts/gen-readme-assets.py`。
 
 Topics：`dsh`, `dsh-plugin`, `deepseek-harness`, `deepseek`, `cordis`, `demurrage`, `ledger`
 

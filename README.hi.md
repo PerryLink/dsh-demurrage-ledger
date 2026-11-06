@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-flow-dark.svg">
-  <img src="docs/assets/dsh-demurrage-ledger-flow-light.svg" width="100%" alt="dsh-demurrage-ledger का डेटा प्रवाह: विलंब शुल्क बही (JSON/YAML) → demurrage_ledger → नियम-पैक DL-001…DL-007 → रिपोर्ट (issues + skipped)">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-hero-en-dark.webp">
+  <img src="docs/assets/dsh-demurrage-ledger-hero-en-light.webp" width="100%" alt="dsh-demurrage-ledger बैनर: बही की एक पंक्ति → DL-003 दिनांक और मुफ़्त-दिन गणना → स्थान के साथ एक निष्कर्ष (पंक्ति 2, overdueDays)">
 </picture>
 
 # dsh-demurrage-ledger
@@ -38,6 +38,11 @@ dsh plugin --profile <name> add dsh-demurrage-ledger
 `dsh-demurrage-ledger` एक कंटेनर विलंब शुल्क बही (हेडर और प्रत्येक कंटेनर की एक पंक्ति) पढ़ता है और उसी बही की पूर्णता तथा अंकगणित की जाँच करता है: क्या हर पंक्ति में कम से कम कंटेनर क्रमांक या बिल ऑफ़ लेडिंग दर्ज है, क्या मुफ़्त अवधि का प्रारंभ दिनांक और वापसी दिनांक पढ़े जा सकते हैं और क्रम में हैं, क्या विलंब दिवस उन दोनों दिनांकों के अंतर में से मुफ़्त दिन घटाकर आते हैं, क्या शुल्क विलंब दिवस × दर के बराबर है, क्या मुद्रा तीन अक्षरों के कोड में लिखी है, क्या कोई कंटेनर क्रमांक दोहराया नहीं गया, और क्या टिप्पणी में कोई अप्रतिस्थापित टेम्पलेट प्लेसहोल्डर शेष नहीं है। मुफ़्त दिन और दर स्वयं बही से लिए जाते हैं, जिसके कॉलम चीनी या अंग्रेज़ी नामों में हो सकते हैं।
 
 यह केवल वे अंतर गिनाता है जिन्हें सामग्री स्वयं प्रमाणित कर सकती है: यह तय नहीं करता कि शुल्क कौन वहन करेगा, दर उचित है या नहीं, छूट संभव है या नहीं, या राशि वसूली योग्य है या नहीं — ये वाहक की दर-सूची, परिवहन अनुबंध और वाणिज्यिक बातचीत पर निर्भर हैं। सब कुछ मेमोरी में चलता है: कोई नेटवर्क नहीं, कोई मॉडल कॉल नहीं, और आपकी दी गई फ़ाइल कभी नहीं बदली जाती।
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-demurrage-ledger-flow-v5-light.svg" width="100%" alt="dsh-demurrage-ledger फ़ील्ड × नियम मैट्रिक्स: सात नियम केवल दस बही फ़ील्ड पढ़ते हैं; भरा बिंदु वह फ़ील्ड है जहाँ निष्कर्ष स्थित है (locator.field) और छल्ला तुलना का फ़ील्ड है; मिलान issues[] में और न चल पाने वाली जाँच skipped[] में जाती है">
+</picture>
 
 ## तीन चरणों में शुरुआत
 
@@ -310,7 +315,7 @@ node ../scripts/sync-shared.mjs dsh-demurrage-ledger   # src/shared ताज़
 
 प्लगइन **केवल डेटा** है: `src/model.ts` तालिका का आकार घोषित करता है, साझा किट पाठक और जाँच इंजन देता है, और नियम-पैक हर जाँच घोषित करता है। `prepublishOnly` गेट दोबारा चलाता है, इसलिए बिना बिल्ड या ड्रिफ़्ट वाला ट्री प्रकाशित नहीं हो सकता।
 
-चित्र [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) से बनते हैं (हाथ से लिखे हल्के/गहरे SVG जिनमें केवल कमांड और कॉन्फ़िगरेशन टोकन हैं); दोबारा चलाने के लिए `python scripts/gen-readme-assets.py`।
+चित्र [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) से बनते हैं (Pillow zh/en के चार हल्के/गहरे हीरो बैनर बनाता है; फ़ील्ड × नियम मैट्रिक्स हाथ से लिखा हल्का/गहरा SVG है); दोबारा चलाने के लिए `python scripts/gen-readme-assets.py`।
 
 Topics: `dsh`, `dsh-plugin`, `deepseek-harness`, `deepseek`, `cordis`, `demurrage`, `ledger`
 

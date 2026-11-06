@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-flow-dark.svg">
-  <img src="docs/assets/dsh-demurrage-ledger-flow-light.svg" width="100%" alt="Flujo de dsh-demurrage-ledger: libro de demoras y detenciones (JSON/YAML) → demurrage_ledger → paquete de reglas DL-001…DL-007 → informe (issues + skipped)">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-hero-en-dark.webp">
+  <img src="docs/assets/dsh-demurrage-ledger-hero-en-light.webp" width="100%" alt="dsh-demurrage-ledger: una fila del libro → la aritmética de fechas y días libres de DL-003 → un hallazgo localizado (fila 2, overdueDays)">
 </picture>
 
 # dsh-demurrage-ledger
@@ -38,6 +38,11 @@ dsh plugin --profile <name> add dsh-demurrage-ledger
 `dsh-demurrage-ledger` lee un libro de demoras y detenciones de contenedores (la cabecera más una fila por contenedor) y comprueba la integridad y la aritmética de ese mismo libro: que cada fila registre al menos un número de contenedor o un conocimiento de embarque, que la fecha de inicio del periodo libre y la fecha de devolución se puedan analizar y sean coherentes entre sí, que los días de exceso sean iguales a la diferencia entre esas dos fechas menos los días libres, que el importe sea igual a los días de exceso × la tarifa, que la moneda se escriba como código de tres letras, que no se repita ningún número de contenedor y que no quede ningún marcador de plantilla sin sustituir en la observación. Los días libres y la tarifa se toman del propio libro, cuyas columnas pueden estar en chino o en inglés.
 
 Solo enumera las diferencias que el propio material puede probar: no decide quién soporta el cargo, si la tarifa es razonable, si cabe una exención ni si el importe es recuperable — eso depende de la tarifa del transportista, del contrato de transporte y de la negociación comercial. Todo se ejecuta en memoria: sin red, sin llamada al modelo y sin modificar el archivo que entregas.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-demurrage-ledger-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-demurrage-ledger-flow-v5-light.svg" width="100%" alt="Matriz de campos × reglas de dsh-demurrage-ledger: las siete reglas solo leen diez campos del libro; el punto relleno marca el campo donde se localiza el hallazgo (locator.field) y el anillo un campo de comparación; los hallazgos van a issues[] y las comprobaciones no ejecutadas a skipped[]">
+</picture>
 
 ## Instalación en tres pasos
 
@@ -310,7 +315,7 @@ node ../scripts/sync-shared.mjs dsh-demurrage-ledger   # refrescar src/shared
 
 El plugin es **solo datos**: `src/model.ts` declara la forma de la tabla, el kit compartido aporta el lector y el motor de comprobación, y el paquete de reglas declara cada comprobación. `prepublishOnly` vuelve a ejecutar la puerta, de modo que una publicación no puede salir con un árbol sin compilar o desviado.
 
-Las imágenes las genera [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (SVG claro/oscuro escritos a mano que solo llevan tokens de comando y configuración); vuelva a ejecutarlo con `python scripts/gen-readme-assets.py`.
+Las imágenes las genera [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (Pillow dibuja los cuatro banners hero zh/en claro/oscuro; la matriz de campos × reglas es un SVG claro/oscuro escrito a mano); vuelva a ejecutarlo con `python scripts/gen-readme-assets.py`.
 
 Topics: `dsh`, `dsh-plugin`, `deepseek-harness`, `deepseek`, `cordis`, `demurrage`, `ledger`
 
