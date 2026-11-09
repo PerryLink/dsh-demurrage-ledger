@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "tier": "L1-lite",
+  "input_formats": [
+    "json",
+    "yaml"
+  ],
+  "outputs": [
+    "markdown",
+    "json"
+  ],
+  "rules": {
+    "total": 7,
+    "executed": 6,
+    "skipped": 1,
+    "manual": 0,
+    "unsupported": 0
+  },
+  "benchmark": {
+    "kind": "quickstart-sample",
+    "corpus_size": 1,
+    "note": "滞箱费台账的 quickstart 样例；无真实台账语料",
+    "measured_at": "2026-11-09"
+  },
+  "limits": [
+    "1 条规则因材料未提供对应字段而跳过",
+    "不做合规/定性判定；未执行规则会列在 skipped"
+  ]
+}
