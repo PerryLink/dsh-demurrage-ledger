@@ -44,6 +44,11 @@ It lists only the differences the material itself can evidence: it does not deci
   <img src="docs/assets/dsh-demurrage-ledger-flow-v5-light.svg" width="100%" alt="dsh-demurrage-ledger field × rule matrix: the seven rules read ten ledger fields only; a filled dot marks the field a finding is located on (locator.field), a ring marks a field the rule compares against; hits go to issues[], checks that cannot run go to skipped[]">
 </picture>
 
+![dsh-demurrage-ledger: real terminal run](docs/assets/dsh-demurrage-ledger-demo.gif)
+
+*Animated replay of a real run recorded in this repository.*
+
+
 ## Three-step setup
 
 1. **Install** (pick one channel):

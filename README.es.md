@@ -44,6 +44,11 @@ Solo enumera las diferencias que el propio material puede probar: no decide qui�
   <img src="docs/assets/dsh-demurrage-ledger-flow-v5-light.svg" width="100%" alt="Matriz de campos × reglas de dsh-demurrage-ledger: las siete reglas solo leen diez campos del libro; el punto relleno marca el campo donde se localiza el hallazgo (locator.field) y el anillo un campo de comparación; los hallazgos van a issues[] y las comprobaciones no ejecutadas a skipped[]">
 </picture>
 
+![dsh-demurrage-ledger: ejecución real de terminal](docs/assets/dsh-demurrage-ledger-demo.gif)
+
+*Repetición animada de una ejecución real registrada en este repositorio.*
+
+
 ## Instalación en tres pasos
 
 1. **Instalar** (elige un canal):

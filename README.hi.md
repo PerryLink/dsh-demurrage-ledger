@@ -44,6 +44,11 @@ dsh plugin --profile <name> add dsh-demurrage-ledger
   <img src="docs/assets/dsh-demurrage-ledger-flow-v5-light.svg" width="100%" alt="dsh-demurrage-ledger फ़ील्ड × नियम मैट्रिक्स: सात नियम केवल दस बही फ़ील्ड पढ़ते हैं; भरा बिंदु वह फ़ील्ड है जहाँ निष्कर्ष स्थित है (locator.field) और छल्ला तुलना का फ़ील्ड है; मिलान issues[] में और न चल पाने वाली जाँच skipped[] में जाती है">
 </picture>
 
+![dsh-demurrage-ledger का असली टर्मिनल रन](docs/assets/dsh-demurrage-ledger-demo.gif)
+
+*इस रिपॉज़िटरी में दर्ज असली रन का एनिमेटेड रीप्ले।*
+
+
 ## तीन चरणों में शुरुआत
 
 1. **इंस्टॉल करें** (कोई एक चैनल चुनें):

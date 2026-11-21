@@ -44,6 +44,11 @@ Enumera apenas as diferenças que o próprio material consegue provar: não deci
   <img src="docs/assets/dsh-demurrage-ledger-flow-v5-light.svg" width="100%" alt="Matriz de campos × regras do dsh-demurrage-ledger: as sete regras leem apenas dez campos do registo; o ponto cheio marca o campo onde o achado é localizado (locator.field) e o anel um campo de comparação; os achados vão para issues[] e as verificações não executadas para skipped[]">
 </picture>
 
+![dsh-demurrage-ledger: execução real de terminal](docs/assets/dsh-demurrage-ledger-demo.gif)
+
+*Repetição animada de uma execução real registrada neste repositório.*
+
+
 ## Instalação em três passos
 
 1. **Instalar** (escolha um canal):
