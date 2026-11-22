@@ -7,6 +7,8 @@
 
 # dsh-demurrage-ledger
 
+Current version `0.2.14`.
+
 **Point out the numbers in a demurrage and detention ledger that do not add up — row by row, without pronouncing a verdict.**
 
 A DeepSeek Harness checker for shipping, customs and settlement desks: it reads a ledger made of a header plus one row per container, checks completeness and arithmetic, and returns a list of what is inconsistent, where, and what to fix.
