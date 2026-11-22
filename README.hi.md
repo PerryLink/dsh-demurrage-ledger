@@ -11,6 +11,8 @@
 
 शिपिंग, सीमा शुल्क और निपटान डेस्क के लिए DeepSeek Harness जाँचक: हेडर और प्रत्येक कंटेनर की एक पंक्ति वाली बही पढ़ता है, पूर्णता और अंकगणित जाँचता है, और बताता है कि क्या असंगत है, कहाँ है और क्या सुधारना है।
 
+अंतिम सत्यापन: DeepSeek Harness `dsh-v0.2.3-alpha.1` (2026-11-22).
+
 [इंस्टॉल](#तीन-चरणों-में-शुरुआत) · [कॉन्फ़िगरेशन](#कॉन्फ़िगरेशन) · [FAQ](#faq) · [简体中文](README.md) · [English](README.en.md) · [Español](README.es.md) · [Português](README.pt.md) · [हिन्दी](README.hi.md)
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-3366CC?style=flat-square&labelColor=2B3245)](LICENSE)
@@ -47,7 +49,6 @@ dsh plugin --profile <name> add dsh-demurrage-ledger
 ![dsh-demurrage-ledger का असली टर्मिनल रन](docs/assets/dsh-demurrage-ledger-demo.gif)
 
 *इस रिपॉज़िटरी में दर्ज असली रन का एनिमेटेड रीप्ले।*
-
 
 ## तीन चरणों में शुरुआत
 
